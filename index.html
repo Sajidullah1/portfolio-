@@ -192,6 +192,43 @@
     color:#f5c86e;background:rgba(232,163,61,.14);border:1px solid rgba(232,163,61,.45);
     padding:5px 11px;border-radius:999px;width:fit-content;
   }
+  /* ---------- Motion & modern polish (v7) ---------- */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+  @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,24px) scale(1.12)}}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @keyframes shine{from{transform:translateX(-120%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}
+  .hero .badge{animation:fadeUp .7s ease both}
+  .hero h1{animation:fadeUp .7s ease .12s both}
+  .hero p.lead{animation:fadeUp .7s ease .24s both}
+  .hero-cta{animation:fadeUp .7s ease .36s both}
+  .hero-meta{animation:fadeUp .7s ease .48s both}
+  .photo-wrap{animation:fadeUp .8s ease .3s both}
+  .grad-text{background-size:200% auto;animation:gradShift 6s ease-in-out infinite}
+  .glow-a{animation:drift 14s ease-in-out infinite alternate}
+  .glow-b{animation:drift 18s ease-in-out infinite alternate-reverse}
+  .float-chip{animation:floaty 5s ease-in-out infinite alternate}
+  .chip-2{animation-delay:1.4s}
+  .grid-3 > .reveal:nth-child(3n+2){transition-delay:.12s}
+  .grid-3 > .reveal:nth-child(3n){transition-delay:.24s}
+  .grid-2 > .reveal:nth-child(2n){transition-delay:.12s}
+  .section{scroll-margin-top:84px}
+  #progressBar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:999}
+  header.scrolled{background:rgba(6,9,12,.88);backdrop-filter:blur(12px);box-shadow:0 12px 32px -16px rgba(0,0,0,.8)}
+  .btn-primary{position:relative;overflow:hidden}
+  .btn-primary::after{content:"";position:absolute;top:0;bottom:0;width:45%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%) skewX(-18deg)}
+  .btn-primary:hover::after{animation:shine .7s ease}
+  .project-cover .big{transition:transform .5s ease}
+  .project:hover .project-cover .big{transform:scale(1.07) translateY(-4px)}
+  .cert-img-wrap img{transition:transform .5s ease}
+  .cert-card:hover .cert-img-wrap img{transform:scale(1.03)}
+  .card:hover{box-shadow:0 24px 60px -24px rgba(0,0,0,.7),0 0 0 1px rgba(52,211,153,.25)}
+  .typing-line{font-family:"JetBrains Mono",monospace;color:var(--accent);font-size:17px;min-height:28px;margin:0 0 6px}
+  .typing-line .caret{display:inline-block;width:9px;height:19px;background:var(--accent);margin-left:3px;vertical-align:-3px;animation:blink 1s step-end infinite}
+  #toTop{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-strong);background:rgba(14,23,30,.92);color:var(--text);font-size:19px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:998;box-shadow:0 16px 40px -16px rgba(0,0,0,.8)}
+  #toTop.show{opacity:1;pointer-events:auto}
+  #toTop:hover{transform:translateY(-3px);border-color:rgba(52,211,153,.5)}
   /* ---------- Reveal ---------- */
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
   .reveal.visible{opacity:1;transform:none}
@@ -199,6 +236,8 @@
     .reveal{opacity:1;transform:none;transition:none}
     .marquee-track{animation:none}
     .badge .dot{animation:none}
+    .float-chip,.glow-a,.glow-b,.grad-text,.hero .badge,.hero h1,.hero p.lead,.hero-cta,.hero-meta,.photo-wrap,.btn-primary::after{animation:none}
+    .typing-line .caret{animation:none}
     html{scroll-behavior:auto}
   }
   /* ---------- Responsive ---------- */
@@ -228,6 +267,7 @@
 </style>
 </head>
 <body>
+  <div id="progressBar" aria-hidden="true"></div>
 <header>
   <div class="wrap nav">
     <a class="logo" href="#top" aria-label="Sajid Ullah home"><span class="logo-mark">S</span><span>Sajid Ullah</span></a>
@@ -260,6 +300,7 @@
           <span class="badge"><span class="dot"></span> Available for remote Flutter roles &amp; internships</span>
           <h1>I build <span class="grad-text">apps</span> people love to use.</h1>
           <p class="lead">I&rsquo;m <b style="color:var(--text)">Sajid Ullah</b> &mdash; a Flutter developer crafting fast, clean cross-platform apps for Android and iOS, from e-commerce stores to study tools, backed by Firebase, REST APIs and solid architecture.</p>
+          <p class="typing-line"><span aria-hidden="true">&gt; </span><span id="typed"></span><span class="caret" aria-hidden="true"></span></p>
           <div class="hero-cta">
             <a class="btn btn-primary" href="#projects">View Projects →</a>
             <a class="btn btn-ghost" href="Sajid_Ullah_CV.pdf" download>Download CV</a>
@@ -275,9 +316,9 @@
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><b><em>16+</em></b><span>Public GitHub repos</span></div>
-        <div class="stat"><b><em>10+</em></b><span>Flutter apps built</span></div>
-        <div class="stat"><b><em>2</em></b><span>Internships completed</span></div>
+        <div class="stat"><b><em><span class="count" data-count="16">0</span>+</em></b><span>Public GitHub repos</span></div>
+        <div class="stat"><b><em><span class="count" data-count="10">0</span>+</em></b><span>Flutter apps built</span></div>
+        <div class="stat"><b><em><span class="count" data-count="2">0</span></em></b><span>Internships completed</span></div>
         <div class="stat"><b><em>5th</em></b><span>Semester &mdash; BSCS, KUST</span></div>
       </div>
     </div>
@@ -517,6 +558,7 @@
   </div>
 </footer>
 
+<button id="toTop" aria-label="Back to top">↑</button>
 <script>
   (function(){
     var y = document.getElementById('year');
@@ -542,6 +584,67 @@
     } else {
       document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
     }
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* Typing effect */
+    var typedEl = document.getElementById('typed');
+    var roles = ['Flutter Developer', 'Android & iOS Developer', 'AI-Powered App Builder', 'Firebase & API Integrator'];
+    if (typedEl) {
+      if (reduced) { typedEl.textContent = roles[0]; }
+      else {
+        var ri = 0, ci = 0, deleting = false;
+        (function typeLoop(){
+          var word = roles[ri];
+          if (!deleting) {
+            ci++;
+            typedEl.textContent = word.slice(0, ci);
+            if (ci === word.length) { deleting = true; setTimeout(typeLoop, 1700); return; }
+            setTimeout(typeLoop, 75);
+          } else {
+            ci--;
+            typedEl.textContent = word.slice(0, ci);
+            if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; setTimeout(typeLoop, 350); return; }
+            setTimeout(typeLoop, 35);
+          }
+        })();
+      }
+    }
+    /* Animated counters */
+    var statsBox = document.querySelector('.stats');
+    function runCounters(){
+      document.querySelectorAll('.count').forEach(function(el){
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        if (reduced) { el.textContent = target; return; }
+        var start = null, dur = 1300;
+        function step(ts){
+          if (!start) start = ts;
+          var t = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(eased * target);
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+    if (statsBox && 'IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if (e.isIntersecting) { runCounters(); cio.disconnect(); } });
+      }, { threshold: 0.4 });
+      cio.observe(statsBox);
+    } else { runCounters(); }
+    /* Scroll progress, header state, back-to-top */
+    var bar = document.getElementById('progressBar');
+    var header = document.querySelector('header');
+    var toTop = document.getElementById('toTop');
+    function onScroll(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      if (bar) bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      if (header) header.classList.toggle('scrolled', h.scrollTop > 10);
+      if (toTop) toTop.classList.toggle('show', h.scrollTop > 600);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    if (toTop) toTop.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); });
   })();
 </script>
 </body>
